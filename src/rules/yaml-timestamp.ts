@@ -59,7 +59,11 @@ export default class YamlTimestamp extends RuleBuilder<YamlTimestampOptions> {
         const created_date = moment(options.fileCreatedTime);
         created_date.locale(options.locale);
 
-        const formatted_date = created_date.format(options.format);
+        // moment.utc(moment(localdate)).format()
+        // created_date = moment(localdate)
+        const formatted_date = moment.utc(created_date).format(options.format);
+
+        // const formatted_date = created_date.format(options.format);
         const created_date_line = `\n${options.dateCreatedKey}: ${formatted_date}`;
 
         const keyWithValueFound = created_match.test(text);
@@ -102,7 +106,12 @@ export default class YamlTimestamp extends RuleBuilder<YamlTimestampOptions> {
         modified_date.locale(options.locale);
         // using the current time helps prevent issues where the previous modified time was greater
         // than 5 seconds prior to the time the linter will finish with the file (i.e. helps prevent accidental infinite loops on updating the date modified value)
-        const formatted_modified_date = options.currentTime.format(options.format);
+
+        // moment.utc(moment(localdate)).format()
+        // options.currentTime = moment(localdate)
+        const formatted_modified_date = moment.utc(options.currentTime).format(options.format);
+
+        // const formatted_modified_date = options.currentTime.format(options.format);
         const modified_date_line = `\n${options.dateModifiedKey}: ${formatted_modified_date}`;
 
         const keyWithValueFound = modified_match.test(text);
